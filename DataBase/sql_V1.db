@@ -1,0 +1,93 @@
+-- Create the database
+CREATE DATABASE dormy_db;
+
+-- Use the database
+USE dormy_db;
+
+-- Table user
+CREATE TABLE user (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(15) UNIQUE,
+    gender ENUM('Male', 'Female', 'Other'),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table pg_data
+CREATE TABLE pg_data (
+    pg_id INT AUTO_INCREMENT PRIMARY KEY,             -- Unique identifier for each PG
+    pg_name VARCHAR(100) NOT NULL,                    -- Name of the PG
+    pg_location TEXT NOT NULL,                        -- Locationaddress of the PG
+    images LONGBLOB,                                  -- Binary data for images
+    videos LONGBLOB,                                  -- Binary data for videos
+    gender ENUM('Male', 'Female', 'Unisex') NOT NULL, -- Gender preference for the PG
+    services_list TEXT,                               -- List of services provided
+    pg_rules TEXT,                                    -- Rules for the PG
+    property_description TEXT,                        -- Description of the property
+    pg_direction_tip TEXT,                            -- Direction tips for the PG
+    google_maplink TEXT,                              -- Google Maps link for the PG
+    prefered_tenents TEXT,                            -- Preferred tenants (e.g., students, professionals)
+    food_availability BOOLEAN DEFAULT FALSE,          -- Indicates if food is available
+    gate_closing_time DATETIME,                       -- Gate closing time
+    available_day_schedule DATETIME,                  -- Day schedule availability
+    available_time_schedule DATETIME,                 -- Time schedule availability
+    posted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Date when the PG was posted
+    postedByOwner BOOLEAN DEFAULT FALSE,              -- Indicates if posted by the owner
+    posted_user_id INT NOT NULL,                      -- ID of the user who posted
+    FOREIGN KEY (posted_user_id) REFERENCES user(user_id) -- Reference to the user table
+);
+
+-- Table pg_room
+CREATE TABLE pg_room (
+    pg_room_id INT AUTO_INCREMENT PRIMARY KEY,
+    occupancy_type ENUM('single', 'double', 'triple', 'quadriple') NOT NULL,
+    room_availability BOOLEAN NOT NULL,
+    deposit_amount DECIMAL(10, 2) NOT NULL,
+    pg_rent DECIMAL(10, 2) NOT NULL,
+    room_amenities_list TEXT,
+    pd_id INT,  -- Added the new pd_id field
+    FOREIGN KEY (pd_id) REFERENCES pg_data(pg_id)  -- Foreign key linking pd_id to pg_data table
+);
+
+-- Table rental
+CREATE TABLE rental (
+    rental_id INT AUTO_INCREMENT PRIMARY KEY,
+    room_type VARCHAR(50),                            -- Type of room (e.g., 1 BHK, 2 BHK, etc.)
+    tenent_type ENUM('Single', 'Family', 'Group'),    -- Type of tenant (e.g., single, family, group)
+    property_type VARCHAR(50),                      -- Type of apartment (e.g., flat, independent house)
+    bhk_type VARCHAR(50),                             -- BHK type (e.g., 1 BHK, 2 BHK, etc.)
+    property_age INT,                                 -- Age of the property (in years)
+    facing VARCHAR(50),                               -- Facing (e.g., east, west, north, south)
+    availability_from DATE,                           -- Availability start date
+    vacancy_floor INT,                                -- Floor on which the vacancy is available
+    total_floor INT,                                  -- Total floors in the building
+    location TEXT,                                    -- Location of the property
+    map_link TEXT,                                    -- Google map link
+    direction_tip TEXT,                               -- Direction tips for the property
+    expected_deposit DECIMAL(10, 2),                  -- Expected deposit amount
+    negotiable BOOLEAN,                               -- Whether the deposit is negotiable (truefalse)
+    furnishing VARCHAR(50),                           -- Furnishing type (e.g., fully furnished, semi-furnished, unfurnished)
+    parking BOOLEAN,                                  -- Whether parking is available (truefalse)
+    room_details_list TEXT,                           -- Details of the rooms available
+    rules TEXT,                                       -- Rules for the property
+    property_description TEXT,                        -- Description of the property
+    images LONGBLOB,                                  -- Binary data for property images
+    videos LONGBLOB,                                  -- Binary data for property videos
+    availability_day_schedule DATETIME,               -- Available day schedule
+    availability_time_for_schedule DATETIME,          -- Available time schedule
+    posted_user_id INT NOT NULL,                      -- ID of the user who posted the rental property
+    FOREIGN KEY (posted_user_id) REFERENCES user(user_id)  -- Foreign key linking posted_user_id to user table
+);
+
+-- Table bookmarked
+CREATE TABLE bookmarked (
+    bookmark_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    pg_id INT NOT NULL,
+    rental_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (pg_id) REFERENCES pg_data(pg_id),
+    FOREIGN KEY (rental_id) REFERENCES rental(rental_id)
+);

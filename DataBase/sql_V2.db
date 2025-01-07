@@ -1,0 +1,133 @@
+-- Create the database
+CREATE DATABASE IF NOT EXISTS dormy_db;
+
+-- Use the newly created database
+USE dormy_db;
+
+-- Create user_data table
+CREATE TABLE user_data (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    profile_photo VARCHAR(255),
+    avatar VARCHAR(255),
+    user_type ENUM('owner', 'pg_room_finder') NOT NULL,
+    preference TEXT
+);
+
+-- Create need_roommate table
+CREATE TABLE need_roommate (
+    roommate_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    location VARCHAR(100) NOT NULL,
+    room_type VARCHAR(50) NOT NULL,
+    rent DECIMAL(10, 2) NOT NULL,
+    looking_for VARCHAR(100) NOT NULL,
+    property_highlights TEXT,
+    image_1 VARCHAR(255),
+    image_2 VARCHAR(255),
+    image_3 VARCHAR(255),
+    property_amenities TEXT,
+    description TEXT,
+    mobile_no_visibility BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id)
+);
+
+-- Create need_room table
+CREATE TABLE need_room (
+    room_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    location VARCHAR(100) NOT NULL,
+    room_type VARCHAR(50) NOT NULL,
+    rent DECIMAL(10, 2) NOT NULL,
+    looking_for VARCHAR(100) NOT NULL,
+    self_highlights TEXT,
+    description TEXT,
+    mobile_no_visibility BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id)
+);
+
+-- Create pg_data table
+CREATE TABLE pg_data (
+    pg_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    pg_name VARCHAR(100) NOT NULL,
+    pg_location VARCHAR(255) NOT NULL,
+    image_1 VARCHAR(255),
+    image_2 VARCHAR(255),
+    image_3 VARCHAR(255),
+    image_4 VARCHAR(255),
+    gender ENUM('Male', 'Female', 'Any') NOT NULL,
+    services TEXT,
+    pg_rules TEXT,
+    other_rules TEXT,
+    property_description TEXT,
+    pg_direction_tip TEXT,
+    posted_date DATE,
+    map_link VARCHAR(255),
+    preferred_tenants VARCHAR(100),
+    food_availability BOOLEAN,
+    gate_closing_time TIME,
+    available_day_schedule VARCHAR(100),
+    available_time_schedule VARCHAR(100),
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id)
+);
+
+-- Create pg_room table
+CREATE TABLE pg_room (
+    pg_room_id INT PRIMARY KEY AUTO_INCREMENT,
+    pg_id INT,
+    occupancy_type VARCHAR(50) NOT NULL,
+    room_availability BOOLEAN DEFAULT TRUE,
+    deposit_amount DECIMAL(10, 2) NOT NULL,
+    room_amenities TEXT,
+    FOREIGN KEY (pg_id) REFERENCES pg_data(pg_id)
+);
+
+-- Create bookmarked table
+CREATE TABLE bookmarked (
+    bookmarked_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    pg_id INT,
+    rental_id INT,
+    FOREIGN KEY (user_id) REFERENCES user_data(user_id),
+    FOREIGN KEY (pg_id) REFERENCES pg_data(pg_id)
+);
+
+-- Create rental table
+CREATE TABLE rental (
+    rental_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_type VARCHAR(50) NOT NULL,
+    tenant_type VARCHAR(50) NOT NULL,
+    property_type VARCHAR(50) NOT NULL,
+    bhk_type VARCHAR(20) NOT NULL,
+    property_size INT,
+    facing VARCHAR(50),
+    property_age INT,
+    available_from DATE,
+    vacancy_floor INT,
+    total_floor INT,
+    location_street VARCHAR(255) NOT NULL,
+    map_link VARCHAR(255),
+    direction_tip TEXT,
+    expected_rent DECIMAL(10, 2) NOT NULL,
+    negotiable BOOLEAN DEFAULT FALSE,
+    expected_deposit DECIMAL(10, 2) NOT NULL,
+    monthly_maintenance DECIMAL(10, 2),
+    furnishing VARCHAR(50),
+    parking VARCHAR(50),
+    room_details TEXT,
+    property_rules TEXT,
+    property_description TEXT,
+    image_1 VARCHAR(255),
+    image_2 VARCHAR(255),
+    image_3 VARCHAR(255),
+    image_4 VARCHAR(255),
+    available_day_schedule VARCHAR(100),
+    available_time_schedule VARCHAR(100)
+);
+
+-- Add foreign key to bookmarked table for rental_id
+ALTER TABLE bookmarked
+ADD FOREIGN KEY (rental_id) REFERENCES rental(rental_id);
