@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +82,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setContentType("application/json");
         String jsonResponse = "{\"error\": \"" + message + "\"}";
         response.getWriter().write(jsonResponse);
+
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write("{\"error\": \"Unauthorized - Invalid or missing JWT token\"}");
+            writer.flush();
+        }
     }
     private boolean isPublicEndpoint(String requestURI) {
         return PUBLIC_ENDPOINTS.stream().anyMatch(requestURI::endsWith);

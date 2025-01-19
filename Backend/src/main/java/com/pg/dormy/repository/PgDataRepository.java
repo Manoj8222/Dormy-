@@ -17,6 +17,15 @@ public interface PgDataRepository extends JpaRepository<PgData,Integer> {
 //    @Query("SELECT p, r FROM PgData p LEFT JOIN p.rooms r ORDER BY p.postedDate DESC")
 //    Page<Object[]> findAllPgDataWithRooms(Pageable pageable);
 
+    @Query("SELECT p FROM PgData p WHERE p.userId = :userId")
+    List<PgData> findByUserId(@Param("userId") Integer userId);
+
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM PgData p " +
+            "WHERE p.pgId = :pgId AND p.userId = :userId")
+    boolean isOwner(@Param("pgId") Integer pgId, @Param("userId") Integer userId);
+
+
+
     @Query("SELECT DISTINCT p FROM PgData p LEFT JOIN FETCH p.rooms ORDER BY p.postedDate DESC")
     Page<PgData> findAllPgDataWithRooms(Pageable pageable);
 

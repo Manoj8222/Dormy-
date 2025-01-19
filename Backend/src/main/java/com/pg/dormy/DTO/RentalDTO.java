@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class RentalDTO {
     private Integer rentalId;
+    private Integer userId;
     private String roomType;
     private String tenantType;
     private String propertyType;
@@ -257,5 +258,13 @@ public class RentalDTO {
 
     public void setAvailableTimeSchedule(String availableTimeSchedule) {
         this.availableTimeSchedule = availableTimeSchedule;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

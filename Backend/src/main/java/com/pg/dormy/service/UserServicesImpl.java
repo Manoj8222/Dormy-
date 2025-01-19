@@ -72,7 +72,7 @@ public class UserServicesImpl implements UserService{
         }
 
         String token = jwtService.generateToken(user);
-        System.out.println(user);
+        System.out.println( "---------"+user.getUserId() + "----------");
 
         return new AuthResponse(token);
     }

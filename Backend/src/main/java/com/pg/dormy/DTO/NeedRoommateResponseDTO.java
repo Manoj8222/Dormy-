@@ -1,67 +1,41 @@
-package com.pg.dormy.entity;
-import jakarta.persistence.*;
-import lombok.Data;
+package com.pg.dormy.DTO;
 
 import java.math.BigDecimal;
-import java.math.BigDecimal;
 
-@Data
-@Entity
-@Table(name = "need_roommate")
-public class NeedRoommate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "roommate_id")
+public class NeedRoommateResponseDTO {
     private Integer roommateId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User userData;
-
-    @Column(name = "user_id")
     private Integer userId;
-
-    @Column(name = "room_city", nullable = false, length = 100)
     private String roomCity;
-
-
-    @Column(name = "room_area")
     private String roomArea;
-
-    @Column(name = "location", nullable = false, length = 100)
     private String location;
-
-    @Column(name = "room_type", nullable = false, length = 50)
     private String roomType;
-
-    @Column(name = "rent", nullable = false, precision = 10, scale = 2)
     private BigDecimal rent;
-
-    @Column(name = "looking_for", nullable = false, length = 100)
     private String lookingFor;
-
-    @Column(name = "property_highlights", columnDefinition = "TEXT")
     private String propertyHighlights;
-
-    @Column(name = "image_1")
+    private String propertyAmenities;
+    private String description;
+    private Boolean mobileNoVisibility;
     private String image1;
-
-    @Column(name = "image_2")
     private String image2;
-
-    @Column(name = "image_3")
     private String image3;
 
-    @Column(name = "property_amenities", columnDefinition = "TEXT")
-    private String propertyAmenities;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
-    @Column(name = "mobile_no_visibility")
-    private Boolean mobileNoVisibility;
-
-    // Getters and setters
+    public NeedRoommateResponseDTO(Integer roommateId, Integer userId, String roomCity, String roomArea, String location, String roomType, BigDecimal rent, String lookingFor, String propertyHighlights, String propertyAmenities, String description, Boolean mobileNoVisibility, String image1, String image2, String image3) {
+        this.roommateId = roommateId;
+        this.userId = userId;
+        this.roomCity = roomCity;
+        this.roomArea = roomArea;
+        this.location = location;
+        this.roomType = roomType;
+        this.rent = rent;
+        this.lookingFor = lookingFor;
+        this.propertyHighlights = propertyHighlights;
+        this.propertyAmenities = propertyAmenities;
+        this.description = description;
+        this.mobileNoVisibility = mobileNoVisibility;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+    }
 
     public Integer getRoommateId() {
         return roommateId;
@@ -69,14 +43,6 @@ public class NeedRoommate {
 
     public void setRoommateId(Integer roommateId) {
         this.roommateId = roommateId;
-    }
-
-    public User getUserData() {
-        return userData;
-    }
-
-    public void setUserData(User userData) {
-        this.userData = userData;
     }
 
     public Integer getUserId() {
@@ -143,30 +109,6 @@ public class NeedRoommate {
         this.propertyHighlights = propertyHighlights;
     }
 
-    public String getImage1() {
-        return image1;
-    }
-
-    public void setImage1(String image1) {
-        this.image1 = image1;
-    }
-
-    public String getImage2() {
-        return image2;
-    }
-
-    public void setImage2(String image2) {
-        this.image2 = image2;
-    }
-
-    public String getImage3() {
-        return image3;
-    }
-
-    public void setImage3(String image3) {
-        this.image3 = image3;
-    }
-
     public String getPropertyAmenities() {
         return propertyAmenities;
     }
@@ -189,5 +131,29 @@ public class NeedRoommate {
 
     public void setMobileNoVisibility(Boolean mobileNoVisibility) {
         this.mobileNoVisibility = mobileNoVisibility;
+    }
+
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
     }
 }

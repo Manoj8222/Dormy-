@@ -1,77 +1,31 @@
-package com.pg.dormy.entity;
-
-import jakarta.persistence.*;
-import lombok.Data;
+package com.pg.dormy.DTO;
 
 import java.math.BigDecimal;
 
-@Data
-@Entity
-@Table(name = "need_room")
-public class NeedRoom {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_id")
-    private Integer roomId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User userData;
-
-    @Column(name = "user_id")
-    private Integer userId;
-
-    @Column(name = "room_city", nullable = false, length = 100)
+public class NeedRoomRequestDTO {
     private String roomCity;
-
-    @Column(name = "location", nullable = false, length = 100)
-    private String location;
-
-    @Column(name = "room_area")
     private String roomArea;
-
-    @Column(name = "room_type", nullable = false, length = 50)
+    private String location;
     private String roomType;
-
-    @Column(name = "rent", nullable = false, precision = 10, scale = 2)
     private BigDecimal rent;
-
-    @Column(name = "looking_for", nullable = false, length = 100)
     private String lookingFor;
-
-    @Column(name = "self_highlights", columnDefinition = "TEXT")
     private String selfHighlights;
-
-    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-
-    @Column(name = "mobile_no_visibility")
     private Boolean mobileNoVisibility;
 
-    // Getters and setters
-
-    public Integer getRoomId() {
-        return roomId;
+    public NeedRoomRequestDTO() {
     }
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
-
-    public User getUserData() {
-        return userData;
-    }
-
-    public void setUserData(User userData) {
-        this.userData = userData;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public NeedRoomRequestDTO(String roomCity, String roomArea, String location, String roomType, BigDecimal rent, String lookingFor, String selfHighlights, String description, Boolean mobileNoVisibility) {
+        this.roomCity = roomCity;
+        this.roomArea = roomArea;
+        this.location = location;
+        this.roomType = roomType;
+        this.rent = rent;
+        this.lookingFor = lookingFor;
+        this.selfHighlights = selfHighlights;
+        this.description = description;
+        this.mobileNoVisibility = mobileNoVisibility;
     }
 
     public String getRoomCity() {
@@ -82,20 +36,20 @@ public class NeedRoom {
         this.roomCity = roomCity;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getRoomArea() {
         return roomArea;
     }
 
     public void setRoomArea(String roomArea) {
         this.roomArea = roomArea;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getRoomType() {

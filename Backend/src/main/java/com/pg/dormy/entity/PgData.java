@@ -2,6 +2,7 @@ package com.pg.dormy.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,12 +16,14 @@ public class PgData {
     private Integer pgId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User userData;
 
     @Column(name = "pg_name", nullable = false, length = 100)
     private String pgName;
 
+    @Column(name = "user_id")
+    private Integer userId;
 
 
     @Column(name = "image_1")
@@ -77,7 +80,7 @@ public class PgData {
 
     @Column(name = "gate_closing_time")
     @Temporal(TemporalType.TIME)
-    private Date gateClosingTime;
+    private LocalTime gateClosingTime;
 
     @Column(name = "available_day_schedule", length = 100)
     private String availableDaySchedule;
@@ -162,6 +165,14 @@ public class PgData {
 
     public String getGender() {
         return gender;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public void setGender(String gender) {
@@ -256,11 +267,11 @@ public class PgData {
         this.foodAvailability = foodAvailability;
     }
 
-    public Date getGateClosingTime() {
+    public LocalTime getGateClosingTime() {
         return gateClosingTime;
     }
 
-    public void setGateClosingTime(Date gateClosingTime) {
+    public void setGateClosingTime(LocalTime gateClosingTime) {
         this.gateClosingTime = gateClosingTime;
     }
 

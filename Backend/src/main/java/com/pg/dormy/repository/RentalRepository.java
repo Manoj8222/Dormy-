@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
     @Query("SELECT r FROM Rental r " +
@@ -25,4 +26,10 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
             @Param("maxRent") BigDecimal maxRent,
             Pageable pageable
     );
+    @Query("SELECT r FROM Rental r WHERE r.user.userId = :userId")
+    List<Rental> findByUserId(@Param("userId") Integer userId);
+
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Rental r " +
+            "WHERE r.rentalId = :rentalId AND r.user.userId = :userId")
+    boolean isOwner(@Param("rentalId") Integer rentalId, @Param("userId") Integer userId);
 }
